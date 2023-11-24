@@ -1,0 +1,36 @@
+{
+	"name": "backend_compass_dev_2/company_utils",
+	"type": "library",
+	"description": "company_utils",
+	"autoload": {
+		"psr-4": {
+			"CompassApp\\": "src/"
+		}
+	},
+	"minimum-stability": "dev",
+	"repositories": [
+		{
+			"type": "vcs",
+			"url": "https://github.com/getCompassUtils/php_base_frame"
+		},
+		{
+			"type": "vcs",
+			"url": "https://github.com/getCompassUtils/company_protobuf_schemes"
+		},
+		{
+			"type": "vcs",
+			"url": "https://github.com/getCompassUtils/php_analytic_utils"
+		}
+	],
+	"require": {
+		"service/php_base_frame": "v1.0.0",
+		"backend_compass_dev_2/company_protobuf_schemes": "v1.0.0",
+		"grpc/grpc": "v1.42.0",
+		"google/protobuf": "v3.20.1",
+		"ext-openssl": "*",
+		"ext-grpc": "*",
+		"ext-memcache": "*",
+		"ext-mbstring": "*",
+		"ext-zend-opcache": "*"
+	}
+}
