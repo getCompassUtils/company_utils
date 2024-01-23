@@ -62,7 +62,10 @@ class Company {
 
 	/**
 	 * Возвращает массив с данными конфига.
+	 *
 	 * @return array
+	 * @throws \BaseFrame\Exception\Request\CompanyConfigNotFoundException
+	 * @throws ParseFatalException
 	 */
 	public function get(string $config):mixed {
 
@@ -85,7 +88,7 @@ class Company {
 	 * Установить значение конфига
 	 *
 	 * @param string $config
-	 * @param        $data
+	 * @param mixed  $data
 	 *
 	 * @return void
 	 */
@@ -97,6 +100,9 @@ class Company {
 
 	/**
 	 * Выполнят загрузку файла с конфигом.
+	 *
+	 * @throws \BaseFrame\Exception\Request\CompanyConfigNotFoundException
+	 * @throws ParseFatalException
 	 */
 	protected function _load(string $file):array {
 
