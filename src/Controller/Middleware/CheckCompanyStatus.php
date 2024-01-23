@@ -14,8 +14,6 @@ use BaseFrame\Router\Request;
  * Проверяем, что компания доступна для запросов.
  * Определяем по статусу.
  */
-#[\JetBrains\PhpStorm\Deprecated("use \CompassApp\Controller\Middleware\CheckCompany instead")]
-
 class CheckCompanyStatus implements \BaseFrame\Router\Middleware\Main {
 
 	/**
@@ -26,8 +24,6 @@ class CheckCompanyStatus implements \BaseFrame\Router\Middleware\Main {
 	 * @throws CompanyIsRelocatingException
 	 * @throws ReturnFatalException
 	 */
-	#[\JetBrains\PhpStorm\Deprecated("use \CompassApp\Controller\Middleware\CheckCompany instead")]
-
 	public static function handle(Request $request):Request {
 
 		if (CompanyProvider::id() < 1) {

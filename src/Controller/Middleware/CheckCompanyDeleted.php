@@ -12,7 +12,6 @@ use CompassApp\System\Company;
  * Проверяем, что компания не удалена.
  * Определяем по статусу.
  */
-#[\JetBrains\PhpStorm\Deprecated("use \CompassApp\Controller\Middleware\CheckCompany instead")]
 class CheckCompanyDeleted implements \BaseFrame\Router\Middleware\Main {
 
 	/**
