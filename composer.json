@@ -24,7 +24,7 @@
 	],
 	"require": {
 		"service/php_base_frame": "*",
-		"backend_compass_dev_2/company_protobuf_schemes": "v1.0.0",
+		"backend_compass_dev_2/company_protobuf_schemes": "*",
 		"grpc/grpc": "v1.42.0",
 		"google/protobuf": "v3.20.1",
 		"ext-openssl": "*",
