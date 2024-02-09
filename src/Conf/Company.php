@@ -62,7 +62,10 @@ class Company {
 
 	/**
 	 * Возвращает массив с данными конфига.
+	 *
 	 * @return array
+	 * @throws \BaseFrame\Exception\Request\CompanyConfigNotFoundException
+	 * @throws ParseFatalException
 	 */
 	public function get(string $config):mixed {
 
@@ -85,7 +88,7 @@ class Company {
 	 * Установить значение конфига
 	 *
 	 * @param string $config
-	 * @param        $data
+	 * @param mixed  $data
 	 *
 	 * @return void
 	 */
@@ -97,6 +100,9 @@ class Company {
 
 	/**
 	 * Выполнят загрузку файла с конфигом.
+	 *
+	 * @throws \BaseFrame\Exception\Request\CompanyConfigNotFoundException
+	 * @throws ParseFatalException
 	 */
 	protected function _load(string $file):array {
 
@@ -106,7 +112,7 @@ class Company {
 		};
 
 		// если уже загрузили конфиг, просто его возвращаем
-		if ($this->_included_file !== []) {
+		if ($this->_included_file) {
 			return $this->_included_file;
 		}
 
@@ -116,7 +122,8 @@ class Company {
 
 		opcache_invalidate($path);
 
-		$this->_included_file = include($path);
+		/** @noinspection UsingInclusionOnceReturnValueInspection */
+		$this->_included_file = include_once($path);
 
 		return $this->_included_file;
 	}

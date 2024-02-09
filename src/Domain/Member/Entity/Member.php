@@ -64,16 +64,6 @@ class Member {
 	];
 
 	/**
-	 * Возвращаем инстанс класса для работы с company_cache
-	 *
-	 * @return CompanyCache
-	 */
-	protected static function _getCompanyCache():CompanyCache {
-
-		return new CompanyCache();
-	}
-
-	/**
 	 * участник ли пользователь компании
 	 *
 	 * @param int $user_id
@@ -83,7 +73,7 @@ class Member {
 	public static function assertIsMember(int $user_id):void {
 
 		try {
-			$member_row = static::_getCompanyCache()::getMember($user_id);
+			$member_row = CompanyCache::getMember($user_id);
 		} catch (\cs_RowIsEmpty) {
 			throw new \cs_UserIsNotMember();
 		}

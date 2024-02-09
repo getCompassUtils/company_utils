@@ -8,6 +8,8 @@ use CompassApp\Company\CompanyProvider;
  * Проверяем, что компания доступна для запросов.
  * Определяем по наличию конфига.
  */
+#[\JetBrains\PhpStorm\Deprecated("use \CompassApp\Controller\Middleware\CheckCompany instead")]
+
 class CheckIsCompanyServed implements \BaseFrame\Router\Middleware\Main {
 
 	/**
