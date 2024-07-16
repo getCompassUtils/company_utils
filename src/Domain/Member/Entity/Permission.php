@@ -193,6 +193,7 @@ class Permission {
 	public const IS_ADD_SINGLE_ENABLED          = "is_add_single_enabled";
 	public const IS_ADD_GROUP_ENABLED           = "is_add_group_enabled";
 	public const IS_CALL_ENABLED                = "is_call_enabled";
+	public const IS_MEDIA_CONFERENCE_ENABLED    = "is_media_conference_enabled";
 
 	/**
 	 * Добавить права в маску

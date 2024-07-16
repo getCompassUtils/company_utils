@@ -4,22 +4,11 @@ namespace CompassApp\Controller;
 
 use BaseFrame\Exception\Domain\ParseFatalException;
 use CompassApp\Domain\Member\Entity\Permission;
-use CompassApp\Gateway\Bus\CompanyCache;
 
 /**
  * экшены апи компании
  */
 class ApiAction extends \BaseFrame\Controller\Action {
-
-	/**
-	 * Возвращаем инстанс класса для работы с company_cache
-	 *
-	 * @return CompanyCache
-	 */
-	protected static function _getCompanyCache():CompanyCache {
-
-		return new CompanyCache();
-	}
 
 	// просим клиент подгрузить пользователей
 	public function users(array $user_list):void {
@@ -92,7 +81,7 @@ class ApiAction extends \BaseFrame\Controller\Action {
 		if ($this->_user_id > 0) {
 
 			// получаем информацию о пользователе
-			$user_info                      = static::_getCompanyCache()::getMember($this->_user_id);
+			$user_info                      = \CompassApp\Gateway\Bus\CompanyCache::getMember($this->_user_id);
 			$output["permissions"]          = Permission::formatToOutput($user_info->role, $user_info->permissions, $permissions_output_version);
 			$output["logged_in"]            = (int) 1;
 			$output["member"]               = (object) \CompassApp\Domain\Member\Entity\Member::formatMember($user_info);
