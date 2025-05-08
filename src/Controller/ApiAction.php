@@ -84,7 +84,7 @@ class ApiAction extends \BaseFrame\Controller\Action {
 			$user_info                      = \CompassApp\Gateway\Bus\CompanyCache::getMember($this->_user_id);
 			$output["permissions"]          = Permission::formatToOutput($user_info->role, $user_info->permissions, $permissions_output_version);
 			$output["logged_in"]            = (int) 1;
-			$output["member"]               = (object) \CompassApp\Domain\Member\Entity\Member::formatMember($user_info);
+			$output["member"]               = (object) \CompassApp\Domain\Member\Entity\Member::formatMember($user_info, true);
 			$output["is_display_push_body"] = (int) $extra["is_display_push_body"];
 
 			// удаляем легаси во второй версии прав

@@ -146,6 +146,11 @@ class Conversation {
 			return $GLOBALS[__CLASS__]["key_list"][$conversation_map];
 		}
 
+		// если ничего не пришло, то возвращаем пустоту
+		if ($conversation_map === "") {
+			return "";
+		}
+
 		// формируем массив для зашифровки
 		$arr = [
 			"conversation_map" => $conversation_map,

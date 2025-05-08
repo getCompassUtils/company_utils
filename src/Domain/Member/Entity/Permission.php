@@ -92,6 +92,8 @@ class Permission {
 	public const RESTRICT_STATUS_PROFILE_EDIT      = 1 << 11; // запрет изменения статуса в своей карточке пользователя
 	public const RESTRICT_DESCRIPTION_PROFILE_EDIT = 1 << 12; // запрет изменения описания в своей карточке пользователя
 
+	public const HIDDEN_READ_MESSAGE_STATUS = 1 << 13; // скрывать статус о прочтении
+
 	// разрешенные права для установки и получения
 	public const ALLOWED_PERMISSION_LIST = [
 		self::GROUP_ADMINISTRATOR,
@@ -108,6 +110,7 @@ class Permission {
 		self::RESTRICT_BADGE_PROFILE_EDIT,
 		self::RESTRICT_STATUS_PROFILE_EDIT,
 		self::RESTRICT_DESCRIPTION_PROFILE_EDIT,
+		self::HIDDEN_READ_MESSAGE_STATUS,
 	];
 
 	// разрешенные права для установки себе
@@ -121,6 +124,7 @@ class Permission {
 		self::SPACE_SETTINGS_LEGACY,
 		self::SPACE_SETTINGS,
 		self::ADMINISTRATOR_STATISTIC_INFINITE,
+		self::HIDDEN_READ_MESSAGE_STATUS,
 	];
 
 	// список прав ограничивающих настройки полей в карточке пользователем у себя
@@ -159,6 +163,7 @@ class Permission {
 			self::ADMINISTRATOR_MANAGEMENT         => "administrator_management",
 			self::SPACE_SETTINGS                   => "space_delete",
 			self::ADMINISTRATOR_STATISTIC_INFINITE => "administrator_statistic_infinite",
+			self::HIDDEN_READ_MESSAGE_STATUS       => "hidden_read_message_status",
 		],
 		2 => [
 			self::GROUP_ADMINISTRATOR              => "group_administrator",
@@ -170,6 +175,7 @@ class Permission {
 			self::SPACE_SETTINGS                   => "space_settings",
 			self::ADMINISTRATOR_MANAGEMENT         => "administrator_management",
 			self::ADMINISTRATOR_STATISTIC_INFINITE => "administrator_statistic_infinite",
+			self::HIDDEN_READ_MESSAGE_STATUS       => "hidden_read_message_status",
 		],
 	];
 
@@ -194,6 +200,7 @@ class Permission {
 	public const IS_ADD_GROUP_ENABLED           = "is_add_group_enabled";
 	public const IS_CALL_ENABLED                = "is_call_enabled";
 	public const IS_MEDIA_CONFERENCE_ENABLED    = "is_media_conference_enabled";
+	public const IS_READ_MESSAGE_STATUS_SHOWN   = "is_read_message_status_shown";
 
 	/**
 	 * Добавить права в маску
@@ -364,12 +371,7 @@ class Permission {
 			}
 
 			if (!isset(self::PERMISSIONS_OUTPUT_SCHEMA_BY_VERSION[$version][$permission]) && $permission) {
-
-				// если право легаси - пропускаем, если нет - вываливаем ошибку, что в правах затесался какой-то левак, который нельзя отдавать клиентам
-				if (in_array($permission, self::_LEGACY_PERMISSION_LIST, true)) {
-					continue;
-				}
-				throw new ParseFatalException("there is no format output for permission {$permission}");
+				continue;
 			}
 
 			// если не являемся администратором - прав у нас вообще нет :(
@@ -385,12 +387,7 @@ class Permission {
 			}
 
 			if (!isset(self::PERMISSIONS_OUTPUT_SCHEMA_BY_VERSION[$version][$permission])) {
-
-				// если право легаси - пропускаем, если нет - вываливаем ошибку, что в правах затесался какой-то левак, который нельзя отдавать клиентам
-				if (in_array($permission, self::_LEGACY_PERMISSION_LIST, true)) {
-					continue;
-				}
-				throw new ParseFatalException("there is no format output for permission {$permission}");
+				continue;
 			}
 			$permissions[self::PERMISSIONS_OUTPUT_SCHEMA_BY_VERSION[$version][$permission]] = 0;
 		}
@@ -420,7 +417,7 @@ class Permission {
 		foreach ($permission_list as $permission) {
 
 			if (!isset(self::_PERMISSIONS_PROFILE_CARD_OUTPUT_SCHEMA[$permission])) {
-				throw new ParseFatalException("there is no format output for permission {$permission}");
+				continue;
 			}
 
 			if (isset(self::_PERMISSIONS_PROFILE_CARD_OUTPUT_SCHEMA[$permission])) {
@@ -432,7 +429,7 @@ class Permission {
 		foreach ($missing_permission_list as $permission) {
 
 			if (!isset(self::_PERMISSIONS_PROFILE_CARD_OUTPUT_SCHEMA[$permission])) {
-				throw new ParseFatalException("there is no format output for permission {$permission}");
+				continue;
 			}
 
 			if (isset(self::_PERMISSIONS_PROFILE_CARD_OUTPUT_SCHEMA[$permission])) {
@@ -465,12 +462,7 @@ class Permission {
 		foreach ($permission_list as $permission) {
 
 			if (!isset(self::_PERMISSIONS_PROFILE_CARD_OUTPUT_SCHEMA[$permission]) && !isset(self::PERMISSIONS_OUTPUT_SCHEMA_BY_VERSION[$version][$permission])) {
-
-				// если право легаси - пропускаем, если нет - вываливаем ошибку, что в правах затесался какой-то левак, который нельзя отдавать клиентам
-				if (in_array($permission, self::_LEGACY_PERMISSION_LIST, true)) {
-					continue;
-				}
-				throw new ParseFatalException("there is no format output for permission {$permission}");
+				continue;
 			}
 
 			if (isset(self::_PERMISSIONS_PROFILE_CARD_OUTPUT_SCHEMA[$permission])) {
@@ -486,12 +478,7 @@ class Permission {
 		foreach ($missing_permission_list as $permission) {
 
 			if (!isset(self::_PERMISSIONS_PROFILE_CARD_OUTPUT_SCHEMA[$permission]) && !isset(self::PERMISSIONS_OUTPUT_SCHEMA_BY_VERSION[$version][$permission])) {
-
-				// если право легаси - пропускаем, если нет - вываливаем ошибку, что в правах затесался какой-то левак, который нельзя отдавать клиентам
-				if (in_array($permission, self::_LEGACY_PERMISSION_LIST, true)) {
-					continue;
-				}
-				throw new ParseFatalException("there is no format output for permission {$permission}");
+				continue;
 			}
 
 			if (isset(self::_PERMISSIONS_PROFILE_CARD_OUTPUT_SCHEMA[$permission])) {
@@ -893,9 +880,9 @@ class Permission {
 
 			$legacy_permission = match ($permission) {
 				self::MEMBER_KICK, self::MEMBER_INVITE => self::HR_LEGACY,
-				self::BOT_MANAGEMENT                   => self::DEVELOPER_LEGACY,
-				self::GROUP_ADMINISTRATOR              => self::ADMIN_LEGACY,
-				default                                => false,
+				self::BOT_MANAGEMENT => self::DEVELOPER_LEGACY,
+				self::GROUP_ADMINISTRATOR => self::ADMIN_LEGACY,
+				default => false,
 			};
 
 			if ($legacy_permission !== false) {
@@ -955,5 +942,18 @@ class Permission {
 		if (Permission::hasOneFromPermissionList($member->permissions, [self::MEMBER_PROFILE_EDIT, self::ADMINISTRATOR_MANAGEMENT, self::SPACE_SETTINGS])) {
 			throw new \CompassApp\Domain\Member\Exception\PermissionNotAllowedSetAnotherAdministrator("permission can't be set to another administrator");
 		}
+	}
+
+	/**
+	 * Проверяем, что у пользователя скрыт статус прочитанных сообщений
+	 *
+	 * @param int $role
+	 * @param int $permissions
+	 *
+	 * @return bool
+	 */
+	public static function isReadMessageStatusHidden(int $role, int $permissions):bool {
+
+		return $role === Member::ROLE_ADMINISTRATOR && Permission::hasPermission($permissions, Permission::HIDDEN_READ_MESSAGE_STATUS);
 	}
 }

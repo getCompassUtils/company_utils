@@ -94,6 +94,11 @@ class CompanySession {
 			return $GLOBALS[__CLASS__]["key_list"][$session_map];
 		}
 
+		// если ничего не пришло, то возвращаем пустоту
+		if ($session_map === "") {
+			return "";
+		}
+
 		// формируем массив для зашифровки
 		$arr = [
 			"company_session_map" => $session_map,

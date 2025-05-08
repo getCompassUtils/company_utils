@@ -252,6 +252,11 @@ class File {
 			return $GLOBALS[__CLASS__]["key_list"][$file_map];
 		}
 
+		// если ничего не пришло, то возвращаем пустоту
+		if ($file_map === "") {
+			return "";
+		}
+
 		$encrypt_iv  = $encrypt_iv ?: CryptProvider::default()->vector();
 		$encrypt_key = $encrypt_key ?: CryptProvider::default()->key();
 

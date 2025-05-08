@@ -140,6 +140,11 @@ class Preview {
 			return $GLOBALS[__CLASS__]["key_list"][$preview_map];
 		}
 
+		// если ничего не пришло, то возвращаем пустоту
+		if ($preview_map === "") {
+			return "";
+		}
+
 		// формируем массив для зашифровки
 		$arr = [
 			"preview_map" => $preview_map,

@@ -30,6 +30,11 @@ class Message {
 	// превратить map в key
 	public static function doEncrypt(string $message_map):string {
 
+		// если ничего не пришло, то возвращаем пустоту
+		if ($message_map === "") {
+			return "";
+		}
+
 		// преобразуем message_map в json
 		$json = self::_getEncryptJson($message_map);
 
