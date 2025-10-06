@@ -147,6 +147,11 @@ class Invite {
 			return $GLOBALS[__CLASS__]["key_list"][$invite_map];
 		}
 
+		// если ничего не пришло, то возвращаем пустоту
+		if ($invite_map === "") {
+			return "";
+		}
+
 		// формируем массив для зашифровки
 		$arr = [
 			"invite_map" => $invite_map,

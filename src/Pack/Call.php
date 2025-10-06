@@ -128,6 +128,11 @@ class Call {
 			return $GLOBALS[__CLASS__]["key_list"][$call_map];
 		}
 
+		// если ничего не пришло, то возвращаем пустоту
+		if ($call_map === "") {
+			return "";
+		}
+
 		// формируем массив для зашифровки
 		$arr = [
 			"call_map" => $call_map,

@@ -165,6 +165,11 @@ class WikiSection {
 			return $GLOBALS[__CLASS__]["key_list"][$section_map];
 		}
 
+		// если ничего не пришло, то возвращаем пустоту
+		if ($section_map === "") {
+			return "";
+		}
+
 		// формируем массив для зашифровки
 		$arr = [
 			"section_map" => $section_map,

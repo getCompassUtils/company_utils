@@ -149,6 +149,11 @@ class Thread {
 			return $GLOBALS[__CLASS__]["key_list"][$thread_map];
 		}
 
+		// если ничего не пришло, то возвращаем пустоту
+		if ($thread_map === "") {
+			return "";
+		}
+
 		// формируем массив для зашифровки
 		$arr = [
 			"thread_map" => $thread_map,

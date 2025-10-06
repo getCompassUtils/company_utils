@@ -367,19 +367,12 @@ class Member {
 	 * Форматируем данные о пользователе
 	 *
 	 * @param Main $member
+	 * @param bool $with_permissions
 	 *
 	 * @return array
-	 * @throws ParseFatalException
 	 * @long большая структура для сущности
 	 */
-	public static function formatMember(Main $member):array {
-
-		$legacy_role = $member->role;
-
-		// если пользователь не имеет всех прав - для легаси клиента он участник обыкновенный
-		if ($member->role === Member::ROLE_ADMINISTRATOR && !Permission::hasOwnerPermissions($member->permissions)) {
-			$legacy_role = Member::ROLE_MEMBER;
-		}
+	public static function formatMember(Main $member, bool $with_permissions = false):array {
 
 		$avg_screen_time         = Extra::getAliasAvgScreenTime($member->extra);
 		$total_action_count      = Extra::getAliasTotalActionCount($member->extra);
@@ -403,6 +396,10 @@ class Member {
 		$avatar_color_id = Extra::getAvatarColorId($member->extra);
 		$avatar_color_id = $avatar_color_id === 0 ? Avatar::getColorByUserId($member->user_id) : $avatar_color_id;
 
+		$permissions = $with_permissions
+			? (object) Permission::formatToOutput($member->role, $member->permissions)
+			: null;
+
 		$output = [
 			"user_id"                 => (int) $member->user_id,
 			"full_name"               => (string) $member->full_name,
@@ -412,6 +409,7 @@ class Member {
 			"company_joined_at"       => (int) $member->company_joined_at,
 			"status"                  => (string) $member->comment,
 			"role_name"               => (string) self::getRoleOutputType($member->role),
+			"permissions"             => $permissions,
 			"type"                    => (string) self::getUserOutputType(\CompassApp\Domain\User\Main::getUserType($member->npc_type)),
 			"badge"                   => (array) [
 				"color_id" => (int) Extra::getBadgeColor($member->extra),
