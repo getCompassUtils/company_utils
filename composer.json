@@ -25,12 +25,11 @@
 	"require": {
 		"service/php_base_frame": "*",
 		"backend_compass_dev_2/company_protobuf_schemes": "*",
-		"grpc/grpc": "1.52.0",
-		"google/protobuf": "v3.23.0",
 		"ext-openssl": "*",
 		"ext-grpc": "*",
 		"ext-memcache": "*",
 		"ext-mbstring": "*",
-		"ext-zend-opcache": "*"
+		"ext-zend-opcache": "*",
+		"ext-protobuf": "*"
 	}
 }
